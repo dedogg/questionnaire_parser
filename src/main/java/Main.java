@@ -1,6 +1,8 @@
 import service.File;
 import service.Parse;
 import service.TopicService;
+
+import java.util.Objects;
 import java.util.Set;
 
 public class Main {
@@ -18,6 +20,9 @@ public class Main {
         for (String file: files) {
             System.out.println(file);
             System.out.println(Parse.parse(path + file));
+            if (args.length != 0 && (Objects.equals(args[0], "true"))) {
+                break;
+            }
         }
     }
 
