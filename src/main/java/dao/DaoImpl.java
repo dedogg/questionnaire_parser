@@ -9,9 +9,9 @@ public interface DaoImpl<T> {
 
     List<T> getAll();
 
-    void save(T t);
+    int save(T t);
 
-    void update(T t, String[] params);
+    void update(T t);
 
     void delete(T t);
 }

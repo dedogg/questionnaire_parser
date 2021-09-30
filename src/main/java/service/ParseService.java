@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Parse {
-    public static HashMap<String, ArrayList> parse(String name) {
+public class ParseService {
+    public static HashMap<String, ArrayList<String>> parse(String name) {
 
         StringBuilder result = new StringBuilder();
         InputStream in;
@@ -25,10 +25,10 @@ public class Parse {
         assert wb != null;
         XSSFSheet sheet = wb.getSheetAt(0);
         TopicService topicService = new TopicService();
-        HashMap<String, ArrayList> listData = new HashMap<>();
+        HashMap<String, ArrayList<String>> listData = new HashMap<>();
         boolean importantRow = false;
         for (Row row : sheet) {
-            ArrayList<String> answers = new ArrayList();
+            ArrayList<String> answers = new ArrayList<>();
             String potentialTopic = "";
             for (Cell cell : row) {
                 importantRow = true;
@@ -36,7 +36,7 @@ public class Parse {
                 if (rowNum >= 4) {
                     String cellValue = cell.toString();
                     int column = cell.getColumnIndex();
-                    result.append(rowNum + " = " + column + " = " + cell.toString());
+                    result.append(rowNum).append(" = ").append(column).append(" = ").append(cell.toString());
 
                     switch (column) {
                         case 0:

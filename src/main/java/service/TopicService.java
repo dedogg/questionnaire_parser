@@ -5,27 +5,27 @@ import models.Topic;
 
 import java.util.List;
 
-public class TopicService {
+public class TopicService implements EntityServiceImpl<Topic>{
     private final TopicDao topicDao = new TopicDao();
 
-    public TopicService() {}
-
-    public void saveTopic(Topic topic) {
-        topicDao.save(topic);
+    public int create(String name)
+    {
+        Topic topic = new Topic();
+        topic.setName(name);
+        return topicDao.save(topic);
     }
 
-    public void deleteTopic(Topic topic) {
+    public void delete(Topic topic) {
         topicDao.delete(topic);
+    }
+
+    @Override
+    public void update(Topic topic) {
+
     }
 
     public List<Topic> getAll() {
         return topicDao.getAll();
     }
 
-    public void createTopic(String name)
-    {
-        Topic topic = new Topic();
-        topic.setName(name);
-        saveTopic(topic);
-    }
 }
