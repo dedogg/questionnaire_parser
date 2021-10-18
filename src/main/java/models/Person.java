@@ -7,7 +7,11 @@ import javax.persistence.*;
 @NamedQueries(
         {
                 @NamedQuery(
-                        name = "findByName",
+                        name = "Person.byId",
+                        query = "from Person e where e.id = :id"
+                ),
+                @NamedQuery(
+                        name = "Person.findByName",
                         query = "from Person e where e.name = :name"
                 )
         }
@@ -26,6 +30,7 @@ public class Person {
         this.id = id;
     }
 
+    @Column(name = "name")
     private String name;
 
     public String getName() {
@@ -36,26 +41,18 @@ public class Person {
         this.name = name;
     }
 
-    private String level;
+    @Column(name = "points")
+    private int points;
 
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    private Integer points;
-
-    public Integer getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(Integer points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
+    @Column(name = "salary")
     private Double salary;
 
     public Double getSalary() {
@@ -66,6 +63,7 @@ public class Person {
         this.salary = salary;
     }
 
+    @Column(name = "reading")
     private int reading;
 
     public Integer getReading() {
@@ -74,5 +72,16 @@ public class Person {
 
     public void setReading(Integer reading) {
         this.reading = reading;
+    }
+
+    @Column(name = "level")
+    private String level;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

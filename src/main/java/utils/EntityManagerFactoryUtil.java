@@ -5,8 +5,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class EntityManagerFactoryUtil {
+    static EntityManagerFactory emf = null;
     public static EntityManager getEntityManager() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("questionnaire");
+        if (emf == null) {
+            emf = Persistence.createEntityManagerFactory("questionnaire");
+        }
         return emf.createEntityManager();
     }
 }

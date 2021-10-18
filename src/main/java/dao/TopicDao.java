@@ -37,9 +37,23 @@ import java.util.Optional;
 //    }
 //}
 public class TopicDao implements DaoImpl<Topic> {
+    public Topic getTest(int id) {
+        TypedQuery<Topic> query =
+                EntityManagerFactoryUtil
+                        .getEntityManager()
+                        .createNamedQuery("Topic.byId", Topic.class)
+                        .setParameter("id", id);
+        return query.getResultList().stream().findFirst().orElse(null);
+    }
+
     @Override
-    public Optional<Topic> get(long id) {
-        return Optional.empty();
+    public Optional<Topic> get(int id) {
+        TypedQuery<Topic> query =
+                EntityManagerFactoryUtil
+                        .getEntityManager()
+                        .createNamedQuery("Topic.byId", Topic.class)
+                        .setParameter("id", id);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
@@ -49,23 +63,36 @@ public class TopicDao implements DaoImpl<Topic> {
     }
 
     @Override
-    public int save(Topic topic) {
+    public Topic save(Topic topic) {
         EntityManager entityManager = EntityManagerFactoryUtil.getEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(topic);
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
-        return topic.getId();
+        return topic;
     }
 
     @Override
     public void update(Topic topic) {
-
+        EntityManager entityManager = EntityManagerFactoryUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(topic);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void delete(Topic topic) {
 
+    }
+
+    public Optional<Topic> findByName(String name) {
+        TypedQuery<Topic> query =
+                EntityManagerFactoryUtil
+                        .getEntityManager()
+                        .createNamedQuery("Topic.findByName", Topic.class)
+                        .setParameter("name", name);
+        return query.getResultList().stream().findFirst();
     }
 }

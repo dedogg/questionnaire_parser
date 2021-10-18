@@ -1,15 +1,17 @@
 package dao;
 
+import models.Person;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface DaoImpl<T> {
 
-    Optional<T> get(long id);
+    Optional<T> get(int id);
 
     List<T> getAll();
 
-    int save(T t);
+    Object save(T t);
 
     void update(T t);
 

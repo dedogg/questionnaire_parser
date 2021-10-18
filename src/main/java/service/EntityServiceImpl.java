@@ -1,10 +1,12 @@
 package service;
 
+import models.Topic;
+
 import java.util.List;
 
 public interface EntityServiceImpl<T> {
 
-    int create(String name);
+    Object create(String name);
 
     void delete(T t);
 

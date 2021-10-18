@@ -11,8 +11,13 @@ import java.util.Optional;
 public class PersonDao implements DaoImpl<Person> {
 
     @Override
-    public Optional<Person> get(long id) {
-        return Optional.empty();
+    public Optional<Person> get(int id) {
+        TypedQuery <Person> query =
+                EntityManagerFactoryUtil
+                        .getEntityManager()
+                        .createNamedQuery("Person.byId", Person.class)
+                        .setParameter("id", id);
+        return query.getResultList().stream().findFirst();
     }
 
     @Override
@@ -22,14 +27,14 @@ public class PersonDao implements DaoImpl<Person> {
     }
 
     @Override
-    public int save(Person person) {
+    public Person save(Person person) {
         EntityManager entityManager = EntityManagerFactoryUtil.getEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(person);
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
-        return person.getId();
+        return person;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class PersonDao implements DaoImpl<Person> {
         TypedQuery<Person> query =
                 EntityManagerFactoryUtil
                         .getEntityManager()
-                        .createNamedQuery("findByName", Person.class)
+                        .createNamedQuery("Person.findByName", Person.class)
                         .setParameter("name", name);
         return query.getResultList().stream().findFirst();
     }

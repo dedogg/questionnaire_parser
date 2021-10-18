@@ -6,11 +6,15 @@ import models.Person;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonService implements EntityServiceImpl<Person>{
+public class PersonService implements EntityServiceImpl<Person> {
     private final PersonDao personDao = new PersonDao();
 
+    public Optional<Person> get (int id) {
+        return personDao.get(id);
+    }
+
     @Override
-    public int create(String name) {
+    public Person create(String name) {
         Person person = new Person();
         person.setName(name);
 
@@ -32,7 +36,7 @@ public class PersonService implements EntityServiceImpl<Person>{
         return personDao.getAll();
     }
 
-    public Optional<Person> findByName(String file) {
-        return personDao.findByName(file);
+    public Optional<Person> findByName(String name) {
+        return personDao.findByName(name);
     }
 }
