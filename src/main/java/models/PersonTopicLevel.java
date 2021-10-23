@@ -1,9 +1,18 @@
 package models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "person_topic_level")
 @Entity
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "PersonTopicLevel.getByComposedKey",
+                        query = "from PersonTopicLevel ptl where ptl.person = :person AND ptl.topic = :topic"
+                )
+        }
+)
 public class PersonTopicLevel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +22,11 @@ public class PersonTopicLevel {
     @Column(name = "level")
     private Integer level;
 
-    @Lob
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "date")
+    private Date date;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "person_id", nullable = false)
@@ -47,6 +58,14 @@ public class PersonTopicLevel {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getLevel() {

@@ -1,18 +1,22 @@
 import models.Person;
+import models.PersonTopicLevel;
 import models.Topic;
-import service.FileService;
-import service.ParseService;
-import service.PersonService;
-import service.TopicService;
+import service.*;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
     private static final TopicService topicService = new TopicService();
     private static final PersonService personService = new PersonService();
+    private static final PersonTopicLevelService personTopicLevelService = new PersonTopicLevelService();
 
     public static void main(String... args) throws Exception {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
 //        topicService.create("sda");
 //        Optional<Topic> exTopic = Optional.of(topicService.get(534).orElse(new Topic()));
 //        Topic topic = exTopic.get();
@@ -31,11 +35,14 @@ public class Main {
             Person person = checkPerson.get();
             int level = 0;
             int read = 0;
-            ArrayList<Integer> topics = new ArrayList<>();
             for (HashMap.Entry<String, ArrayList<String>> entry : data.entrySet()) {
                 int k = 0;
                 String topicName = entry.getKey();
                 ArrayList<String> knowledge = entry.getValue();
+//                System.out.println();
+                String comment = knowledge.get(3);
+
+
                 //пропускаем ненужные строки
                 switch (knowledge.get(0)) {
                     case "":
@@ -59,9 +66,26 @@ public class Main {
                 Optional<Topic> checkTopic = Optional.of(topicService.findByName(topicName)
                         .orElseGet(() -> topicService.create(topicName)));
                 Topic topic = checkTopic.get();
-                int topicID = topic.getId();
 
-                topics.add(topicID);
+                int finalK = k;
+                Optional<PersonTopicLevel> checkPersonTopicLevel = Optional.of(personTopicLevelService
+                        .getByComposedKey(person, topic)
+                        .orElseGet(() ->
+                                personTopicLevelService.create(
+                                        person,
+                                        topic,
+                                        finalK,
+                                        comment,
+                                        date
+                                )
+                        ));
+
+                PersonTopicLevel personTopicLevel = checkPersonTopicLevel.get();
+                personTopicLevel.setLevel(finalK);
+                personTopicLevel.setDate(date);
+                personTopicLevel.setComment(comment);
+                personTopicLevelService.update(personTopicLevel);
+
             }
             ArrayList<Integer> levelRead = new ArrayList<>();
 
@@ -73,10 +97,6 @@ public class Main {
             levelRead.add(read);
 
             personService.update(person);
-
-            for (Integer top : topics) {
-
-            }
 
             // прилепим перки к юзеру
 

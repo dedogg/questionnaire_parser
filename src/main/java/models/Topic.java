@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "topic")
@@ -54,4 +56,6 @@ public class Topic {
         return weight;
     }
 
+    @OneToMany(mappedBy = "topic")
+    Set<PersonTopicLevel> persons = new HashSet<>();
 }

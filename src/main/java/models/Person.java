@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "person")
@@ -84,4 +86,7 @@ public class Person {
     public void setLevel(String level) {
         this.level = level;
     }
+
+    @OneToMany(mappedBy = "person")
+    Set<PersonTopicLevel> topics = new HashSet<>();
 }

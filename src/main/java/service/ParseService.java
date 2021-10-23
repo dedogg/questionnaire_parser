@@ -36,14 +36,14 @@ public class ParseService {
                 if (rowNum >= 4) {
                     String cellValue = cell.toString();
                     int column = cell.getColumnIndex();
-                    result.append(rowNum).append(" = ").append(column).append(" = ").append(cell.toString());
+                    result.append(rowNum).append(" = ").append(column).append(" = ").append(cellValue);
 
                     switch (column) {
                         case 0:
                             potentialTopic = cellValue;
                             break;
                         case 1:
-                            if (cellValue == "") {
+                            if (Objects.equals(cellValue, "")) {
                                 importantRow = false;
                             }
                             answers.add(cellValue);
