@@ -43,6 +43,12 @@ public class Main {
                 String comment = knowledge.get(3);
 
 
+                Optional<Topic> checkTopic = Optional.of(topicService.findByName(topicName)
+                        .orElseGet(() -> topicService.create(topicName)));
+                Topic topic = checkTopic.get();
+
+                Integer topicWeightCoefficient = topic.getWeight();
+                topicWeightCoefficient = (topicWeightCoefficient != 0 ? topicWeightCoefficient : 1);
                 //пропускаем ненужные строки
                 switch (knowledge.get(0)) {
                     case "":
@@ -58,14 +64,12 @@ public class Main {
                         break;
 
                 }
-                level = level + k;
+                level = level + k * topicWeightCoefficient;
                 if (Objects.equals(knowledge.get(1), "Читал")) {
                     read = read + 1;
                 }
 
-                Optional<Topic> checkTopic = Optional.of(topicService.findByName(topicName)
-                        .orElseGet(() -> topicService.create(topicName)));
-                Topic topic = checkTopic.get();
+
 
                 int finalK = k;
                 Optional<PersonTopicLevel> checkPersonTopicLevel = Optional.of(personTopicLevelService
@@ -97,9 +101,6 @@ public class Main {
             levelRead.add(read);
 
             personService.update(person);
-
-            // прилепим перки к юзеру
-
 
             results.put(file, levelRead);
             if (args.length != 0 && (Objects.equals(args[0], "true"))) {
